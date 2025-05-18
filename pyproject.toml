@@ -14,8 +14,12 @@ dependencies = [
     "fastapi",
     "pydantic-extra-types",
     "phonenumbers",
-    "redis"
+    "redis", 
+    "uvicorn"
 ]
+
+[project.scripts]
+phoneaddress = "phoneaddress:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["phoneaddress"]
