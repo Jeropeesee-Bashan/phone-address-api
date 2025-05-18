@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Response
 
-from schemas import PhoneAddressData, PhoneNumber
+from .schemas import PhoneAddressData, PhoneNumber
 
 
 app = FastAPI(
