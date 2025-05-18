@@ -1,10 +1,16 @@
-import os
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field, RedisDsn
 
-from uvicorn import Config
+
+__all__ = ["settings"]
 
 
-__all__ = ["REDIS_URL", "HOST", "PORT"]
+class Settings(BaseSettings):
+    redis_url: RedisDsn = "redis://localhost:6379"
+    host: str = "0.0.0.0"
+    port: int = 80
 
-REDIS_URL = os.getenv("PHONEADDRESS_REDIS_URL", "redis://localhost:6379")
-HOST = os.getenv("PHONEADDRESS_HOST", "0.0.0.0")
-PORT = os.getenv("PHONEADDRESS_PORT", "80")
+    model_config = SettingsConfigDict(env_prefix="phoneaddress_")
+
+
+settings = Settings()
