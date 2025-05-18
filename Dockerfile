@@ -3,7 +3,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 COPY pyproject.toml .
-COPY ./src ./src
+COPY ./phoneaddress ./phoneaddress
 
 RUN pip install --upgrade pip && pip install --no-cache-dir .
 
