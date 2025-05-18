@@ -18,8 +18,4 @@ dependencies = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src"]
-sources = {"src" = "phoneaddress"}
-
-[tool.hatch.build]
-dev-mode-dirs = ["src"]
+packages = ["phoneaddress"]
