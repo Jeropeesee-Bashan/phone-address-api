@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "phone-address-api"
+version = "0.1.0"
+description = "FastAPI-сервис для работы с контактными данными"
+authors = [
+    { name = "Andrey Kulenko", email = "andrey@kulenko.su" }
+]
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi",
+    "phonenumbers",
+    "redis"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+sources = {"src" = "phone-address-api"}
+
+[tool.hatch.build]
+dev-mode-dirs = ["src"]
