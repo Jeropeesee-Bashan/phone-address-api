@@ -25,14 +25,17 @@ AVE Technologies.
 
 @app.get("/address", response_model=PhoneAddressData)
 def get_address(phone: PhoneNumber):
+    """Получение адреса по номеру телефона"""
     pass
 
 
 @app.post("/address")
 def post_address(phone: PhoneAddressData, response: Response):
+    """Запись нового номера телефона и адреса"""
     pass
 
 
 @app.put("/address")
 def put_address(phone: PhoneAddressData, response: Response):
+    """Обновление адреса по существующему номеру телефона"""
     pass
