@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Response
 
-from .schemas import PhoneAddressData, PhoneNumber
+from .schemas import PhoneAddressData, RussianPhoneNumber
 
 
 app = FastAPI(
@@ -24,7 +24,7 @@ AVE Technologies.
 
 
 @app.get("/address", response_model=PhoneAddressData)
-def get_address(phone: PhoneNumber):
+def get_address(phone: RussianPhoneNumber):
     """Получение адреса по номеру телефона"""
     pass
 
