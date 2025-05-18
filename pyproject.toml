@@ -19,7 +19,7 @@ dependencies = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
-sources = {"src" = "phone-address-api"}
+sources = {"src" = "phoneaddress"}
 
 [tool.hatch.build]
 dev-mode-dirs = ["src"]

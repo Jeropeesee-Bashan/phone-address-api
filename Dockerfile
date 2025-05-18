@@ -11,4 +11,4 @@ RUN pip install --upgrade pip && \
 
 EXPOSE 80
 
-CMD ["uvicorn", "phone-address-api:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "phoneaddress:app", "--host", "0.0.0.0", "--port", "80"]
