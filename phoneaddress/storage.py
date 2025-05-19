@@ -4,8 +4,10 @@ from contextlib import asynccontextmanager
 from .config import *
 from .keyval import KeyVal
 
+from typing import Optional
 
-storage: KeyVal | None = None
+
+storage: Optional[KeyVal] = None
 
 
 @asynccontextmanager

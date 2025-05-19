@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Awaitable
+from typing import Optional
 
 import redis.asyncio as redis
 
@@ -16,7 +17,7 @@ class KeyVal(ABC):
         return super().__new__(cls)
 
     @abstractmethod
-    async def get(self, key: str) -> str | None:
+    async def get(self, key: str) -> Optional[str]:
         """Получить значение из key-val хранилища."""
         pass
 
@@ -55,7 +56,7 @@ class Redis(KeyVal):
     def __init__(self, client: redis.client):
         self._client = client
 
-    async def get(self, key: str) -> str | None:
+    async def get(self, key: str) -> Optional[str]:
         r = await self._client.get(key)
         if r is not None and isinstance(r, bytes):
             r = r.decode()
