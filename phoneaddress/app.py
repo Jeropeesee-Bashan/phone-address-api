@@ -80,6 +80,9 @@ async def post_address(phone_address: PhoneAddressData, response: Response):
     response.status_code = HTTP_201_CREATED
 
 
+# Хэндлер мог бы обрабатывать /address/{phone}, но тогда пришлось бы принимать
+# один единственный параметр body, то есть прошлось бы написать ещё одну
+# pydantic-модель для адреса. Оставим как есть - так лучше читается.
 @app.put("/address")
 async def put_address(phone_address: PhoneAddressData, response: Response):
     """Обновление адреса по существующему номеру телефона."""
