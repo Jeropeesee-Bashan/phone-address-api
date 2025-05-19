@@ -25,12 +25,9 @@ async def lifespan(app: FastAPI):
     global storage
 
     try:
-        print(storage)
         storage = await keyval_factory(settings)
-        print(storage)
         yield
     finally:
-        print("aboooooooooba")
         if storage is not None:
             await storage.close()
 
