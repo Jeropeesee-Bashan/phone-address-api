@@ -49,14 +49,22 @@ AVE Technologies.
 Сервис предоставляет три обработчика по пути `/address`:
 - **GET** - получить адрес по номеру телефона;
 - **POST** - записать новый номер телефона вместе с адресом;
-- **PUT** - обновить адрес по существующему номеру телефона.
+- **PUT** - обновить адрес по сохранённому номеру телефона;
+- **DELETE** - удалить запись номера телефона и адреса.
 """,
     version="0.1.0",
     lifespan=lifespan,
 )
 
 
-@app.get("/address", response_model=PhoneAddressData)
+@app.get(
+    "/address",
+    response_model=PhoneAddressData,
+    responses={
+        HTTP_200_OK: {"description": "Адрес найден."},
+        HTTP_404_NOT_FOUND: {"description": "Номер телефона не найден."},
+    },
+)
 async def get_address(phone: RussianPhoneNumber):
     """Получение адреса по номеру телефона."""
 
@@ -67,7 +75,15 @@ async def get_address(phone: RussianPhoneNumber):
     return PhoneAddressData(phone=phone, address=address)
 
 
-@app.post("/address")
+@app.post(
+    "/address",
+    responses={
+        HTTP_201_CREATED: {"description": "Номер телефона и адрес сохранены."},
+        HTTP_400_BAD_REQUEST: {
+            "description": "Адрес с таким номером телефона уже существует."
+        },
+    },
+)
 async def post_address(phone_address: PhoneAddressData, response: Response):
     """Запись нового номера телефона и адреса."""
 
@@ -83,7 +99,16 @@ async def post_address(phone_address: PhoneAddressData, response: Response):
 # Хэндлер мог бы обрабатывать /address/{phone}, но тогда пришлось бы принимать
 # один единственный параметр body, то есть прошлось бы написать ещё одну
 # pydantic-модель для адреса. Оставим как есть - так лучше читается.
-@app.put("/address")
+@app.put(
+    "/address",
+    responses={
+        HTTP_200_OK: {"description": "Адрес обновлён."},
+        HTTP_400_BAD_REQUEST: {"description": "Адрес не имеет изменений."},
+        HTTP_404_NOT_FOUND: {
+            "description": "Адреса с таким номером телефона не существует."
+        },
+    },
+)
 async def put_address(phone_address: PhoneAddressData, response: Response):
     """Обновление адреса по существующему номеру телефона."""
 
@@ -100,7 +125,15 @@ async def put_address(phone_address: PhoneAddressData, response: Response):
     response.status_code = HTTP_200_OK
 
 
-@app.delete("/address")
+@app.delete(
+    "/address",
+    responses={
+        HTTP_200_OK: {"description": "Номер телефона и адрес удалены."},
+        HTTP_404_NOT_FOUND: {
+            "description": "Адреса с таким номером телефона не существует."
+        },
+    },
+)
 async def delete_address(phone: RussianPhoneNumber, response: Response):
     """Удаление адреса по номеру телефона."""
 
