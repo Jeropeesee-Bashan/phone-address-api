@@ -1,6 +1,11 @@
 from fastapi import FastAPI, Response
 
-from starlette.status import HTTP_404_NOT_FOUND
+from starlette.status import (
+    HTTP_201_CREATED,
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND,
+)
 from starlette.exceptions import HTTPException
 
 from .schemas import PhoneAddressData, RussianPhoneNumber
@@ -47,17 +52,36 @@ AVE Technologies.
 
 @app.get("/address", response_model=PhoneAddressData)
 async def get_address(phone: RussianPhoneNumber):
-    """Получение адреса по номеру телефона"""
-    pass
+    """Получение адреса по номеру телефона."""
+
+    address = await storage[phone]
+    if address is None:
+        raise HTTPException(HTTP_404_NOT_FOUND, "Номер телефона не найден.")
+
+    return PhoneAddressData(phone=phone, address=address)
 
 
 @app.post("/address")
-async def post_address(phone: PhoneAddressData, response: Response):
-    """Запись нового номера телефона и адреса"""
-    pass
+async def post_address(phone_address: PhoneAddressData, response: Response):
+    """Запись нового номера телефона и адреса."""
+
+    if await storage.__contains__(phone_address.phone):
+        raise HTTPException(
+            HTTP_400_BAD_REQUEST, "Адрес с таким номером телефона уже существует."
+        )
+
+    await storage.__setitem__(phone_address.phone, phone_address.address)
+    response.status_code = HTTP_201_CREATED
 
 
 @app.put("/address")
-async def put_address(phone: PhoneAddressData, response: Response):
-    """Обновление адреса по существующему номеру телефона"""
-    pass
+async def put_address(phone_address: PhoneAddressData, response: Response):
+    """Обновление адреса по существующему номеру телефона."""
+
+    if not await storage.__contains__(phone_address.phone):
+        raise HTTPException(
+            HTTP_400_BAD_REQUEST, "Адреса с таким номером телефона не существует."
+        )
+
+    await storage.__setitem__(phone_address.phone, phone_address.address)
+    response.status_code = HTTP_200_OK
