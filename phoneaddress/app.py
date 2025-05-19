@@ -8,8 +8,31 @@ from starlette.status import (
 )
 from starlette.exceptions import HTTPException
 
+from contextlib import asynccontextmanager
+
 from .schema import PhoneAddressData, RussianPhoneNumber
-from .storage import storage, lifespan
+from .config import *
+from .keyval import KeyVal
+
+from typing import Optional
+
+
+storage: Optional[KeyVal] = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global storage
+
+    try:
+        print(storage)
+        storage = await keyval_factory(settings)
+        print(storage)
+        yield
+    finally:
+        print("aboooooooooba")
+        if storage is not None:
+            await storage.close()
 
 
 app = FastAPI(
