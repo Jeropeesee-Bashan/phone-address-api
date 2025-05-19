@@ -1,6 +1,24 @@
 from fastapi import FastAPI, Response
 
 from .schemas import PhoneAddressData, RussianPhoneNumber
+from .config import *
+from .keyval import KeyVal
+
+from contextlib import asynccontextmanager
+
+
+storage: KeyVal | None = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global storage
+
+    try:
+        storage = await keyval_factory(settings)
+        yield
+    finally:
+        await storage.close()
 
 
 app = FastAPI(
@@ -20,6 +38,7 @@ AVE Technologies.
 - **PUT** - обновить адрес по существующему номеру телефона.
 """,
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 
