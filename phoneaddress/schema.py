@@ -15,4 +15,4 @@ class PhoneAddressData(BaseModel):
     phone: RussianPhoneNumber = Field(
         examples=["+79991234567", "+7 900 111 11 11", "900 222 22 22"]
     )
-    address: str
+    address: str = Field(min_length=1)
