@@ -23,6 +23,15 @@ docker build -t phone-address-api:latest .
 в Docker производится через штатную точку входа `fastapi`, запускаясь, как один
 поток в одном процессе, что весьма предпочтительно для кластеров Kubernetes.
 
+## Тестирование
+Чтобы быстро протестировать сервис, можно воспользоваться pytest и
+Docker Compose:
+```sh
+docker-compose up --build -d
+pytest ./tests/phonenumbers.py
+docker-compose down
+```
+
 ## Описание
 Были реализованы три обработчика по пути `/address` с методами:
 - GET

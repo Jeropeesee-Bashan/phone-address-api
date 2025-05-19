@@ -1,0 +1,14 @@
+# Развёртывание для тестирования
+
+services:
+  redis:
+    image: redis:latest
+
+  app:
+    build: .
+    ports:
+      - "8085:80"
+    depends_on:
+      - redis
+    environment:
+      PHONEADDRESS_REDIS_URL: "redis://redis:6379"
