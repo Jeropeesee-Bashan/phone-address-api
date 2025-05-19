@@ -25,6 +25,10 @@ class KeyVal(ABC):
         """Записать значение в key-val хранилище."""
         pass
 
+    async def __contains__(self, key: str) -> bool:
+        """Проверить наличие ключа в key-val хранилище."""
+        pass
+
     @abstractmethod
     async def close(self):
         """Закрыть подключение к key-val хранилищу."""
@@ -55,6 +59,9 @@ class Redis(KeyVal):
 
     async def __setitem__(self, key: str, value: str):
         await self._client.set(key, value)
+
+    async def __contains__(self, key: str) -> bool:
+        return await self._client.exists(key)
 
     async def close(self):
         await self._client.close()
