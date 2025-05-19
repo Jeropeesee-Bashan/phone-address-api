@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "phone-address-api"
-version = "0.1.0"
+version = "1.0.0"
 description = "FastAPI-сервис для работы с контактными данными"
 authors = [
     { name = "Andrey Kulenko", email = "andrey@kulenko.su" }
