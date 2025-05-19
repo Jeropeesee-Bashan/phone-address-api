@@ -30,6 +30,10 @@ class KeyVal(ABC):
         """Проверить наличие ключа в key-val хранилище."""
         pass
 
+    async def delete(self, key: str):
+        """Удалить запись по ключу из key-val хранилища."""
+        pass
+
     @abstractmethod
     async def close(self):
         """Закрыть подключение к key-val хранилищу."""
@@ -63,6 +67,9 @@ class Redis(KeyVal):
 
     async def contains(self, key: str) -> bool:
         return await self._client.exists(key)
+
+    async def delete(self, key: str):
+        await self._client.delete(key)
 
     async def close(self):
         await self._client.close()

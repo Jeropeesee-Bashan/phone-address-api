@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Response
 
 from starlette.status import (
-    HTTP_201_CREATED,
     HTTP_200_OK,
+    HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
 )
@@ -71,4 +71,17 @@ async def put_address(phone_address: PhoneAddressData, response: Response):
         raise HTTPException(HTTP_400_BAD_REQUEST, "Адрес не имеет изменений.")
 
     await storage.set(phone_address.phone, phone_address.address)
+    response.status_code = HTTP_200_OK
+
+
+@app.delete("/address")
+async def delete_address(phone: RussianPhoneNumber, response: Response):
+    """Удаление адреса по номеру телефона."""
+
+    if not await storage.contains(phone):
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, "Адреса с таким номером телефона не существует."
+        )
+
+    await storage.delete(phone)
     response.status_code = HTTP_200_OK
