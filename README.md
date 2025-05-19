@@ -27,6 +27,8 @@ docker build -t phone-address-api:latest .
 Чтобы быстро протестировать сервис, можно воспользоваться pytest и
 Docker Compose:
 ```sh
+# pip install pytest httpx
+
 docker-compose up --build -d
 pytest ./tests/phonenumbers.py
 docker-compose down
