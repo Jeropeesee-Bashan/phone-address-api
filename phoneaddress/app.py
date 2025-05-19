@@ -8,7 +8,7 @@ from starlette.status import (
 )
 from starlette.exceptions import HTTPException
 
-from .schemas import PhoneAddressData, RussianPhoneNumber
+from .schema import PhoneAddressData, RussianPhoneNumber
 from .config import *
 from .keyval import KeyVal
 
@@ -54,7 +54,7 @@ AVE Technologies.
 async def get_address(phone: RussianPhoneNumber):
     """Получение адреса по номеру телефона."""
 
-    address = await storage[phone]
+    address = await storage.get(phone)
     if address is None:
         raise HTTPException(HTTP_404_NOT_FOUND, "Номер телефона не найден.")
 
@@ -65,12 +65,12 @@ async def get_address(phone: RussianPhoneNumber):
 async def post_address(phone_address: PhoneAddressData, response: Response):
     """Запись нового номера телефона и адреса."""
 
-    if await storage.__contains__(phone_address.phone):
+    if await storage.contains(phone_address.phone):
         raise HTTPException(
             HTTP_400_BAD_REQUEST, "Адрес с таким номером телефона уже существует."
         )
 
-    await storage.__setitem__(phone_address.phone, phone_address.address)
+    await storage.set(phone_address.phone, phone_address.address)
     response.status_code = HTTP_201_CREATED
 
 
@@ -78,10 +78,10 @@ async def post_address(phone_address: PhoneAddressData, response: Response):
 async def put_address(phone_address: PhoneAddressData, response: Response):
     """Обновление адреса по существующему номеру телефона."""
 
-    if not await storage.__contains__(phone_address.phone):
+    if not await storage.contains(phone_address.phone):
         raise HTTPException(
             HTTP_400_BAD_REQUEST, "Адреса с таким номером телефона не существует."
         )
 
-    await storage.__setitem__(phone_address.phone, phone_address.address)
+    await storage.set(phone_address.phone, phone_address.address)
     response.status_code = HTTP_200_OK
