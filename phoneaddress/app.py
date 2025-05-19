@@ -90,7 +90,11 @@ async def post_address(phone_address: PhoneAddressData, response: Response):
         )
 
     await storage.set(phone_address.phone, phone_address.address)
-    response.status_code = HTTP_201_CREATED
+
+    # В теле ответа, возможно, стоило бы что-то возвращать пользователю, но
+    # с данным API никакого дополнительного контекста для работы не
+    # подразумевается, поэтому кода статуса достаточно.
+    response.status_code = HTTP_201_CREATE
 
 
 # Хэндлер мог бы обрабатывать /address/{phone}, но тогда пришлось бы принимать
