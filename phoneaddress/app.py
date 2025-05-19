@@ -1,5 +1,8 @@
 from fastapi import FastAPI, Response
 
+from starlette.status import HTTP_404_NOT_FOUND
+from starlette.exceptions import HTTPException
+
 from .schemas import PhoneAddressData, RussianPhoneNumber
 from .config import *
 from .keyval import KeyVal
@@ -43,18 +46,18 @@ AVE Technologies.
 
 
 @app.get("/address", response_model=PhoneAddressData)
-def get_address(phone: RussianPhoneNumber):
+async def get_address(phone: RussianPhoneNumber):
     """Получение адреса по номеру телефона"""
     pass
 
 
 @app.post("/address")
-def post_address(phone: PhoneAddressData, response: Response):
+async def post_address(phone: PhoneAddressData, response: Response):
     """Запись нового номера телефона и адреса"""
     pass
 
 
 @app.put("/address")
-def put_address(phone: PhoneAddressData, response: Response):
+async def put_address(phone: PhoneAddressData, response: Response):
     """Обновление адреса по существующему номеру телефона"""
     pass
