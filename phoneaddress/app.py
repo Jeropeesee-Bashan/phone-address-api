@@ -107,7 +107,7 @@ async def post_address(phone_address: PhoneAddressData, response: Response):
     },
 )
 async def put_address(phone_address: PhoneAddressData, response: Response):
-    """Обновление адреса по существующему номеру телефона."""
+    """Обновление адреса по сохранённому номеру телефона."""
 
     address = await storage.get(phone_address.phone)
     if address is None:
