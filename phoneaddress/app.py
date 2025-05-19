@@ -78,10 +78,14 @@ async def post_address(phone_address: PhoneAddressData, response: Response):
 async def put_address(phone_address: PhoneAddressData, response: Response):
     """Обновление адреса по существующему номеру телефона."""
 
-    if not await storage.contains(phone_address.phone):
+    address = await storage.get(phone_address.phone)
+    if address is None:
         raise HTTPException(
-            HTTP_400_BAD_REQUEST, "Адреса с таким номером телефона не существует."
+            HTTP_404_NOT_FOUND, "Адреса с таким номером телефона не существует."
         )
+
+    if address == phone_address.address:
+        raise HTTPException(HTTP_400_BAD_REQUEST, "Адрес не имеет изменений.")
 
     await storage.set(phone_address.phone, phone_address.address)
     response.status_code = HTTP_200_OK
