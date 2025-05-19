@@ -25,6 +25,7 @@ class KeyVal(ABC):
         """Записать значение в key-val хранилище."""
         pass
 
+    @abstractmethod
     async def contains(self, key: str) -> bool:
         """Проверить наличие ключа в key-val хранилище."""
         pass
