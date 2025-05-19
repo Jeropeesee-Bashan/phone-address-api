@@ -18,4 +18,5 @@ async def lifespan(app: FastAPI):
         storage = await keyval_factory(settings)
         yield
     finally:
-        await storage.close()
+        if storage is not None:
+            await storage.close()
