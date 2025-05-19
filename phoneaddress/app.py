@@ -9,24 +9,7 @@ from starlette.status import (
 from starlette.exceptions import HTTPException
 
 from .schema import PhoneAddressData, RussianPhoneNumber
-from .config import *
-from .keyval import KeyVal
-
-from contextlib import asynccontextmanager
-
-
-storage: KeyVal | None = None
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    global storage
-
-    try:
-        storage = await keyval_factory(settings)
-        yield
-    finally:
-        await storage.close()
+from .storage import storage, lifespan
 
 
 app = FastAPI(
